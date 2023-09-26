@@ -1,0 +1,116 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+
+    import java.util.*;
+    class Student {
+        private int studentID;
+        private String name;
+        private double totalFeesPaid;
+
+        public Student(int studentID, String name) {
+            this.studentID = studentID;
+            this.name = name;
+            this.totalFeesPaid = 0.0;
+        }
+
+        public int getStudentID() {
+            return studentID;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public double getTotalFeesPaid() {
+            return totalFeesPaid;
+        }
+
+        public void payFees(double amount) {
+            totalFeesPaid += amount;
+        }
+    }
+
+    class fms {
+        private Map<Integer, Student> students;
+
+        public fms() {
+            this.students = new HashMap<>();
+        }
+
+        public void addStudent(Student student) {
+            students.put(student.getStudentID(), student);
+        }
+
+        public Student getStudent(int studentID) {
+            return students.get(studentID);
+        }
+
+        public void displayStudentInfo(int studentID) {
+            Student student = students.get(studentID);
+            if (student != null) {
+                System.out.println("Student ID: " + student.getStudentID());
+                System.out.println("Student Name: " + student.getName());
+                System.out.println("Total Fees Paid: $" + student.getTotalFeesPaid());
+            } else {
+                System.out.println("Student not found.");
+            }
+        }
+    }
+
+    public class feemanagementsystem {
+        public static void main(String[] args) {
+            fms feesSystem = new fms();
+            Scanner scanner = new Scanner(System.in);
+
+            while (true) {
+                System.out.println("1. Add Student");
+                System.out.println("2. Pay Fees");
+                System.out.println("3. Display Student Info");
+                System.out.println("4. Exit");
+                System.out.print("Enter your choice: ");
+                int choice = scanner.nextInt();
+
+                switch (choice) {
+                    case 1:
+                        System.out.print("Enter Student ID: ");
+                        int studentID = scanner.nextInt();
+                        scanner.nextLine(); // Consume newline
+                        System.out.print("Enter Student Name: ");
+                        String studentName = scanner.nextLine();
+                        Student student = new Student(studentID, studentName);
+                        feesSystem.addStudent(student);
+                        System.out.println("Student added successfully.");
+                        break;
+
+                    case 2:
+                        System.out.print("Enter Student ID: ");
+                        studentID = scanner.nextInt();
+                        System.out.print("Enter Fee Amount to Pay: $");
+                        double feeAmount = scanner.nextDouble();
+                        Student studentToPay = feesSystem.getStudent(studentID);
+                        if (studentToPay != null) {
+                            studentToPay.payFees(feeAmount);
+                            System.out.println("Fees paid successfully.");
+                        } else {
+                            System.out.println("Student not found.");
+                        }
+                        break;
+
+                    case 3:
+                        System.out.print("Enter Student ID: ");
+                        studentID = scanner.nextInt();
+                        feesSystem.displayStudentInfo(studentID);
+                        break;
+
+                    case 4:
+                        scanner.close();
+                        System.exit(0);
+
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                }
+            }
+        }
+    }
